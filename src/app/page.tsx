@@ -41,7 +41,7 @@ export default function Home() {
 
   return (
     <Box p={6} w={"1300px"} maxW={"100%"} margin={"0 auto"}>
-      <Heading mb={6}>Dragon Ball Characters</Heading>
+      <Heading mb={6}>Dragon Ball Characters - Development</Heading>
 
       <Grid
         lg={{ gridTemplateColumns: "repeat(4, minmax(220px, 1fr))" }}
