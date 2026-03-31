@@ -68,6 +68,23 @@ jobs:
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_PROD }}
+      - name: Resumo do deploy com IA
+        env:
+          OPENAI_TOKEN: ${{ secrets.OPENAI_TOKEN }}
+        run: |
+          RESUMO=$(curl -s https://api.openai.com/v1/chat/completions \
+            -H "Authorization: Bearer $OPENAI_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "model": "gpt-4o",
+              "max_tokens": 200,
+              "messages": [{
+                "role": "user",
+                "content": "Gere um resumo técnico curto (3 linhas) de um deploy feito no branch ${{ github.ref_name }}, commit ${{ github.sha }}, por ${{ github.actor }}. Seja direto e objetivo."
+              }]
+            }') 
+
+          echo "$RESUMO" | jq -r '.choices[0].message.content'
 
   deploy-staging:
     needs: test
@@ -106,3 +123,21 @@ jobs:
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_DEV }}
+
+      - name: Resumo do deploy com IA
+        env:
+          OPENAI_TOKEN: ${{ secrets.OPENAI_TOKEN }}
+        run: |
+          RESUMO=$(curl -s https://api.openai.com/v1/chat/completions \
+            -H "Authorization: Bearer $OPENAI_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "model": "gpt-4o",
+              "max_tokens": 200,
+              "messages": [{
+                "role": "user",
+                "content": "Gere um resumo técnico curto (3 linhas) de um deploy feito no branch ${{ github.ref_name }}, commit ${{ github.sha }}, por ${{ github.actor }}. Seja direto e objetivo."
+              }]
+            }') 
+
+          echo "$RESUMO" | jq -r '.choices[0].message.content'
