@@ -28,5 +28,6 @@ describe("DragonBallService", () => {
     const response = await service.all();
 
     expect(response).toEqual(mockData);
+    // expect(response[0].name).toEqual("Hello");
   });
 });
